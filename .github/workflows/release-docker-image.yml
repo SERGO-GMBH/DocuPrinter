@@ -30,7 +30,7 @@ jobs:
       run: docker build . --file Dockerfile --tag sergogmbh/docuprinter:${{ github.ref_name }} --tag sergogmbh/docuprinter:latest
 
     - name: Docker Push
-      run: docker push sergogmbh/versionize --all-tags
+      run: docker push sergogmbh/docuprinter --all-tags
 
     - name: Create Release
       id: create_release
