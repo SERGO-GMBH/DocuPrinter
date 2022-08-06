@@ -83,9 +83,9 @@ Each API call allows Puppeteer options via `body.export`
 There is a helm-chart available to install this application to Kubernetes. Checkout this [GitHub Repo](https://github.com/SERGO-GMBH/DocuPrinter-Helm) for more information.
 
 ```
-helm repo add sergo-docu-printer https://github.com/SERGO-GMBH/DocuPrinter-Helm
+helm repo add sergo-docuprinter https://sergo-gmbh.github.io/DocuPrinter-Helm/
 
-helm upgrade --install docu-prunter sergo-docu-printer/docu-printer
+helm upgrade --install docuprinter sergo-docuprinter/docuprinter
 ```
 
 ## Kubernetes Deployment Notes
@@ -119,7 +119,7 @@ spec:
                     - key: name
                       operator: In
                       values:
-                        - export-html
+                        - docuprinter
                 topologyKey: kubernetes.io/hostname
       containers:
         - image: sergogmbh/docuprinter:latest
@@ -141,10 +141,10 @@ spec:
             - name: http-server
               containerPort: 2305
           volumeMounts:
-            - name: export-html-cache
+            - name: docuprinter-cache
               mountPath: /workdir/data
       volumes:
-        - name: export-html-cache
+        - name: docuprinter-cache
           emptyDir: {}
 ```
 
