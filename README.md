@@ -7,14 +7,14 @@ _Security Note: This is intended to run as a micro service - do not directly exp
 ## Usage
 
 ```bash
-docker run  -p 2305:2305 bedrockio/export-html
+docker run -p 2305:2305 sergogmbh/docuprinter
 ```
 
 Or:
 
 ```
-git clone git@github.com:bedrockio/export-html.git
-cd export-html
+git clone git@github.com:SERGO-GMBH/DocuPrinter.git
+cd DocuPrinter
 yarn install
 yarn start
 ```
@@ -61,12 +61,12 @@ Each API call allows Puppeteer options via `body.export`
 - [POST /1/screenshot](https://pptr.dev/#?product=Puppeteer&version=v8.0.0&show=api-pagescreenshotoptions)
 
 ## Kubernetes helm-chart Deployment
-There is a helm-chart available to install this application to Kubernetes. Checkout this [GitHub Repo](https://github.com/SERGO-GMBH/export-html-helm) for more information.
+There is a helm-chart available to install this application to Kubernetes. Checkout this [GitHub Repo](https://github.com/SERGO-GMBH/DocuPrinter-Helm) for more information.
 
 ```
-helm repo add sergo-export-html https://sergo-gmbh.github.io/export-html-helm/
+helm repo add sergo-docu-printer https://github.com/SERGO-GMBH/DocuPrinter-Helm
 
-helm upgrade --install html-export sergo-export-html/html-export
+helm upgrade --install docu-prunter sergo-docu-printer/docu-printer
 ```
 
 ## Kubernetes Deployment Notes
@@ -79,16 +79,16 @@ Here's an example of a Kubernetes deployment that limits resources (this is used
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: export-html-deployment
+  name: docuprinter-deployment
 spec:
   replicas: 3
   selector:
     matchLabels:
-      name: export-html
+      name: docuprinter
   template:
     metadata:
       labels:
-        name: export-html
+        name: docuprinter
     spec:
       affinity:
         podAntiAffinity:
@@ -103,9 +103,9 @@ spec:
                         - export-html
                 topologyKey: kubernetes.io/hostname
       containers:
-        - image: bedrockio/export-html
+        - image: sergogmbh/docuprinter:latest
           imagePullPolicy: Always
-          name: export-html
+          name: docuprinter
           resources:
             requests:
               memory: "1000Mi"
