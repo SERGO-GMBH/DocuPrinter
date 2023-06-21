@@ -1,12 +1,13 @@
 const Router = require("@koa/router");
-const Koa = require("koa");
-const bodyParser = require("koa-body");
+const Koa = require('koa');
+const { koaBody } = require('koa-body');
 const validate = require("./utils/middleware/validate");
 const errorHandler = require("./utils/middleware/error-handler");
 const Sentry = require("@sentry/node");
 const { version } = require("../package.json");
 const config = require("@bedrockio/config");
 const { loggingMiddleware } = require("@bedrockio/instrumentation");
+const { logger, setupTelemetry } = require("@bedrockio/instrumentation");
 
 const Joi = require("joi");
 
@@ -25,7 +26,7 @@ if (
 }
 
 app
-  .use(bodyParser({ multipart: true }))
+  .use(koaBody({ multipart: true }))
   .use(loggingMiddleware())
   .use(errorHandler);
 
@@ -99,7 +100,7 @@ router.post(
       base64: Joi.boolean().default(false),
       export: Joi.object({
         scale: Joi.number().default(1),
-        displayHeaderFooter: Joi.boolean().default(true),
+        displayHeaderFooter: Joi.boolean().default(false),
         headerTemplate: Joi.string(),
         footerTemplate: Joi.string(),
         printBackground: Joi.boolean().default(true),
@@ -123,12 +124,12 @@ router.post(
           )
           .default("Letter"),
         margin: Joi.object({
-          top: Joi.string(),
-          right: Joi.string(),
-          bottom: Joi.string(),
-          left: Joi.string(),
+          top: Joi.string().default(0),
+          right: Joi.string().default(0),
+          bottom: Joi.string().default(0),
+          left: Joi.string().default(0),
         }),
-        preferCSSPageSize: Joi.boolean().default(false),
+        preferCSSPageSize: Joi.boolean().default(true),
       }),
     }),
   }),
