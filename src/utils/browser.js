@@ -8,7 +8,7 @@ async function getBrowserWebsocket() {
     ...(process.env.PUPPETEER_SKIP_CHROMIUM_DOWNLOAD
       ? { executablePath: "/usr/bin/chromium-browser" }
       : {}),
-    args: ["--no-sandbox", "--disable-dev-shm-usage"],
+    args: ["--no-sandbox", "--disable-dev-shm-usage", '--font-render-hinting=none', '--force-color-profile=srgb'],
   });
 
   browserWSEndpoint = browser.wsEndpoint();
